@@ -226,13 +226,7 @@ Contains a simple login interface for demonstration purposes. No authentication 
 ## Current Status
 The frontend application has been completed according to the Week 2 requirements. All pages are accessible through routing, components are reusable, and the layout adapts to different screen sizes.
 
-## Future Improvements
-* Integrate a backend API
-* Add user authentication and authorization
-* Connect dashboard statistics to real data
-* Implement dark mode
-* Add animations and improved user interactions
-* Introduce certificate verification workflows
+
 ## Setup
 Setup instructions and deployment details will be added in future iterations of the project.
->>>>>>> 8ccd99396216ce3fef63b56b8f33260daeb2f370
+
