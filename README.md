@@ -2,59 +2,63 @@
 
 ## Project Overview
 
-CertiTrace AI is a full-stack web application designed for essential oil producers to manage production batches, verify certificates, and maintain traceability throughout the production lifecycle. The application provides an intuitive dashboard for monitoring batches, certificates, and dispatch records while demonstrating REST API integration between the frontend and backend.
+CertiTrace AI is a full-stack web application designed for essential oil producers to manage production batches, verify certificates, and maintain traceability throughout the production lifecycle.
 
-The project currently uses an Express.js backend with in-memory data storage and a React frontend. It serves as a prototype for future integration with a database, secure authentication, and AI-powered certificate verification.
-
----
-
-## Features
-
-* Responsive React frontend built with reusable components
-* Dashboard displaying production batch statistics
-* Batch management through REST APIs
-* Search batches by batch number or plant name
-* Express.js backend with CRUD operations
-* Error handling middleware
-* Environment variable configuration using `.env`
-* Mobile-friendly responsive layout
-* Clean and modern user interface
+The application enables users to create, view, update, delete, and search production batches through a responsive React dashboard connected to a Node.js and Express backend with MongoDB Atlas for persistent data storage.
 
 ---
 
-## Technology Stack
+# Features
 
-### Frontend
-
-CertiTrace AI is a frontend web application designed for essential oil producers to manage production records, verify certificates, and maintain traceability across their operations. The goal of this project is to provide a simple and user-friendly interface that helps businesses organize important information in one place.
-This version focuses on the frontend experience and does not include backend services, database integration, or authentication functionality.
-
-## Design Decisions
-* Clean and professional user interface
-* Inter font for readability
-* Green color palette to reflect sustainability and agriculture-related industries
-* Responsive layout that works on desktop and mobile devices
-* Simple navigation between pages
-
-## Technology Stack
-* React 19
-* React Router
-* Tailwind CSS
-* Lucide React Icons
-* Vite
-<<<<<<< HEAD
-
-### Backend
-
-* Node.js
-* Express.js
-* CORS
-* Dotenv
-* Nodemon
+- Responsive React frontend built with reusable components
+- Production batch management dashboard
+- Full CRUD operations (Create, Read, Update, Delete)
+- Search batches by batch number or plant name
+- RESTful API using Express.js
+- MongoDB Atlas database integration
+- Mongoose ODM for database operations
+- Error handling middleware
+- Axios integration between frontend and backend
+- Environment variable configuration using `.env`
+- Mobile-friendly responsive layout
 
 ---
 
-## Project Structure
+# Technology Stack
+
+## Frontend
+
+- React 19
+- React Router
+- Tailwind CSS
+- Axios
+- Lucide React Icons
+- Vite
+
+## Backend
+
+- Node.js
+- Express.js
+- MongoDB Atlas
+- Mongoose
+- CORS
+- Dotenv
+- Nodemon
+
+---
+
+# Design Decisions
+
+- Clean and professional user interface
+- Green color palette representing sustainability
+- Responsive design for desktop and mobile
+- RESTful backend architecture
+- MongoDB chosen for flexible document-based storage
+- Reusable React components for maintainability
+
+---
+
+# Project Structure
 
 ```
 certitrace-ai/
@@ -63,19 +67,22 @@ certitrace-ai/
 │   ├── src/
 │   │   ├── components/
 │   │   ├── pages/
-│   │   ├── App.js
+│   │   ├── services/
+│   │   ├── App.jsx
 │   │   └── main.jsx
 │   ├── package.json
 │   └── vite.config.js
 │
 ├── backend/
+│   ├── config/
+│   │   └── db.js
 │   ├── controllers/
 │   ├── middleware/
+│   ├── models/
 │   ├── routes/
 │   ├── server.js
-│   ├── package.json
 │   ├── .env.example
-│   └── data/
+│   └── package.json
 │
 ├── README.md
 └── .gitignore
@@ -83,66 +90,119 @@ certitrace-ai/
 
 ---
 
-## REST API Endpoints
+# Database Choice
 
-| Method | Endpoint                      | Description             |
-| ------ | ----------------------------- | ----------------------- |
-| GET    | /api/batches                  | Retrieve all batches    |
-| GET    | /api/batches/:id              | Retrieve a single batch |
-| POST   | /api/batches                  | Create a new batch      |
-| PUT    | /api/batches/:id              | Update batch details    |
-| DELETE | /api/batches/:id              | Delete a batch          |
-| GET    | /api/batches/search?q=keyword | Search batches          |
+MongoDB Atlas was selected because production batch information is naturally represented as documents. The flexible schema allows easy expansion in future versions, such as adding certificate metadata, QR codes, AI verification results, and user information.
+
+Mongoose is used as the ODM to simplify CRUD operations and schema validation.
 
 ---
 
-## Frontend Pages
+# Database Schema
 
-### Home
+## Batch Collection
 
-Introduces the platform and highlights its core features.
-
-### About
-
-Explains the purpose, benefits, and vision of CertiTrace AI.
-
-### Dashboard
-
-Displays live batch information retrieved from the backend API, including production statistics and batch records.
-
-### Login
-
-Simple login interface for demonstration purposes. Authentication is not yet implemented.
+| Field | Type |
+|---------|------|
+| batchNumber | String |
+| plant | String |
+| harvestDate | String |
+| certificate | String |
+| dispatch | String |
+| createdAt | Date |
+| updatedAt | Date |
 
 ---
 
-## Backend Setup
+## Schema Diagram
 
-Navigate to the backend folder:
+Add your Week 5 schema diagram here.
+
+Example:
+
+```
+docs/W5_SchemaDiagram_YourInternID.png
+```
+
+or
+
+```markdown
+![Schema Diagram](docs/W5_SchemaDiagram_YourInternID.png)
+```
+
+---
+
+# REST API Endpoints
+
+| Method | Endpoint | Description |
+|----------|---------------------------|----------------------------|
+| GET | /api/batches | Retrieve all batches |
+| GET | /api/batches/:id | Retrieve a single batch |
+| POST | /api/batches | Create a batch |
+| PUT | /api/batches/:id | Update a batch |
+| DELETE | /api/batches/:id | Delete a batch |
+| GET | /api/batches/search?q=keyword | Search batches |
+
+---
+
+# Frontend Pages
+
+## Home
+
+Introduces CertiTrace AI and its key features.
+
+## About
+
+Provides information about the platform and its objectives.
+
+## Dashboard
+
+Displays production statistics retrieved from MongoDB.
+
+Features include:
+
+- View batches
+- Add batches
+- Edit batches
+- Delete batches
+- Live statistics cards
+
+## Login
+
+Simple demonstration login page.
+
+Authentication will be implemented in future versions.
+
+---
+
+# Backend Setup
+
+Navigate to backend
 
 ```bash
 cd backend
 ```
 
-Install dependencies:
+Install dependencies
 
 ```bash
 npm install
 ```
 
-Create a `.env` file:
+Create a `.env` file
 
-```text
+```env
 PORT=5000
+MONGO_URI=your_mongodb_connection_string
 ```
 
-Run the backend server:
+Run the backend
 
 ```bash
 npm run dev
 ```
 
-Server URL:
+Backend runs on
 
 ```
 http://localhost:5000
@@ -150,89 +210,98 @@ http://localhost:5000
 
 ---
 
-## Frontend Setup
+# Frontend Setup
 
-Navigate to the frontend folder:
+Navigate to frontend
 
 ```bash
 cd frontend
 ```
 
-Install dependencies:
+Install dependencies
 
 ```bash
 npm install
 ```
 
-Start the development server:
+Run the frontend
 
 ```bash
 npm run dev
 ```
 
-Frontend URL:
+Frontend runs on
 
 ```
 http://localhost:5173
 ```
 
+---
 
-## Current Status
+# Environment Variables
 
-* Week 1: Project planning and repository setup completed.
-* Week 2: Responsive frontend developed.
-* Week 3: UI components, responsive testing, wireframes, and theme improvements completed.
-* Week 4: Express backend implemented with REST APIs and frontend successfully connected to backend services.
+Example `.env.example`
 
+```env
+PORT=5000
 
-=======
+MONGO_URI=your_mongodb_connection_string
+```
 
-## Project Structure
-src/
-├── App.js
-├── App.css
-├── index.css
-├── components/
-│   ├── Navbar.jsx
-│   ├── Hero.jsx
-│   ├── Card.jsx
-│   └── Footer.jsx
-└── pages/
-    ├── Home.jsx
-    ├── About.jsx
-    ├── Dashboard.jsx
-    └── Login.jsx
+---
 
-### Home Page
-The landing page introduces CertiTrace AI and highlights the platform's key features through a hero section and feature cards.
+# Current Status
 
-### About Page
-Provides information about the purpose of the platform and its core values: security, simplicity, and traceability.
+### Week 1
 
-### Dashboard Page
-Displays sample statistics related to batches, certificates, and dispatch records.
+- Project planning
+- Repository setup
+- UI wireframes
 
-### Login Page
-Contains a simple login interface for demonstration purposes. No authentication logic has been implemented.
+### Week 2
 
-## Features
-* Responsive navigation bar
-* Hero section with call-to-action buttons
-* Reusable card components
-* Dashboard statistics cards
-* Mobile-friendly design
-* Footer available on all pages
+- React frontend
+- Responsive pages
+- Routing
 
-## Current Status
-The frontend application has been completed according to the Week 2 requirements. All pages are accessible through routing, components are reusable, and the layout adapts to different screen sizes.
+### Week 3
 
-## Future Improvements
-* Integrate a backend API
-* Add user authentication and authorization
-* Connect dashboard statistics to real data
-* Implement dark mode
-* Add animations and improved user interactions
-* Introduce certificate verification workflows
-## Setup
-Setup instructions and deployment details will be added in future iterations of the project.
->>>>>>> 8ccd99396216ce3fef63b56b8f33260daeb2f370
+- UI improvements
+- Reusable components
+- Responsive testing
+
+### Week 4
+
+- Express backend
+- REST APIs
+- Frontend-backend integration
+
+### Week 5
+
+- MongoDB Atlas integration
+- Mongoose models
+- Persistent database
+- Full CRUD operations
+- Dynamic dashboard
+- Axios API integration
+
+---
+
+# Future Improvements
+
+- User authentication
+- Role-based authorization
+- AI-powered certificate verification
+- QR code verification
+- Certificate upload and management
+- Analytics dashboard
+- Export reports as PDF
+- Notification system
+
+---
+
+# Author
+
+**Sunidhi**
+
+AI-Assisted Full Stack Web Development Internship

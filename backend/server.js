@@ -2,10 +2,14 @@ const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
 
+const connectDB = require("./config/db");
+
 const batchRoutes = require("./routes/batches");
 const errorHandler = require("./middleware/errorHandler");
 
 const app = express();
+
+connectDB();
 
 app.use(cors());
 app.use(express.json());
