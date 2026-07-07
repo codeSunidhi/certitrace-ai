@@ -121,13 +121,13 @@ Add your Week 5 schema diagram here.
 Example:
 
 ```
-docs/W5_SchemaDiagram_TBI-26100875pdf.png
+docs/W5_SchemaDiagram_TBI-26100875.pdf
 ```
 
 or
 
 ```markdown
-![Schema Diagram](W5_SchemaDiagram_TBI-26100875pdf.png)
+![Schema Diagram](W5_SchemaDiagram_TBI-26100875.pdf)
 ```
 
 ---
