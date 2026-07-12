@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import api from "../services/api";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { Mail, Lock, LogIn } from "lucide-react";
@@ -6,11 +8,50 @@ import { Mail, Lock, LogIn } from "lucide-react";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // UI only
-  };
+const navigate = useNavigate();
+useEffect(() => {
+  const params = new URLSearchParams(window.location.search);
+  const token = params.get("token");
+
+  if (token) {
+    localStorage.setItem("token", token);
+    navigate("/dashboard");
+  }
+}, [navigate]);
+
+  const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  setError("");
+  setLoading(true);
+
+  try {
+    const response = await api.post("/auth/login", {
+      email,
+      password,
+    });
+
+    // Save JWT
+    localStorage.setItem("token", response.data.token);
+
+    alert("Login Successful!");
+
+    navigate("/dashboard");
+  } catch (err) {
+    console.error(err);
+
+    if (err.response) {
+      setError(err.response.data.message);
+    } else {
+      setError("Unable to connect to the server.");
+    }
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <div
@@ -39,6 +80,11 @@ const Login = () => {
               data-testid="login-card"
               className="rounded-2xl border border-slate-200 bg-white p-7 sm:p-8 shadow-sm"
             >
+              {error && (
+  <div className="mb-4 rounded-lg bg-red-100 p-3 text-red-700">
+    {error}
+  </div>
+)}
               <form onSubmit={handleSubmit} className="space-y-5">
                 <div>
                   <label
@@ -92,13 +138,25 @@ const Login = () => {
                   className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-green-500 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-green-600 transition-colors"
                 >
                   <LogIn className="h-4 w-4" />
-                  Login
+                  {loading ? "Logging in..." : "Login"}
                 </button>
+                <div className="mt-4">
+  <button
+    type="button"
+    onClick={() =>
+      window.location.href =
+        "http://localhost:5000/api/auth/google"
+    }
+    className="w-full rounded-lg border border-slate-300 bg-white py-2.5 text-sm font-semibold hover:bg-slate-100"
+  >
+    Sign in with Google
+  </button>
+</div>
               </form>
 
               <p className="mt-6 text-center text-xs text-slate-500">
-                Demo UI only — no authentication performed.
-              </p>
+  Secure login powered by JWT authentication.
+</p>
             </div>
           </div>
         </section>

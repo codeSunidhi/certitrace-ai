@@ -1,5 +1,8 @@
 const express = require("express");
 const router = express.Router();
+const verifyToken = require("../middleware/verifyToken");
+
+const requireAuth = require("../middleware/authMiddleware");
 
 const {
   getBatches,
@@ -7,19 +10,19 @@ const {
   createBatch,
   updateBatch,
   deleteBatch,
-  searchBatch
+  searchBatch,
 } = require("../controllers/batchController");
 
-router.get("/", getBatches);
+router.get("/", verifyToken, getBatches);
 
-router.get("/search", searchBatch);
+router.get("/search", verifyToken, searchBatch);
 
-router.get("/:id", getBatch);
+router.get("/:id", verifyToken, getBatch);
 
-router.post("/", createBatch);
+router.post("/", verifyToken, createBatch);
 
-router.put("/:id", updateBatch);
+router.put("/:id", verifyToken, updateBatch);
 
-router.delete("/:id", deleteBatch);
+router.delete("/:id", verifyToken, deleteBatch);
 
 module.exports = router;
