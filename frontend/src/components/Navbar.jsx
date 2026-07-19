@@ -7,6 +7,7 @@ const navItems = [
   { to: "/about", label: "About" },
   { to: "/dashboard", label: "Dashboard" },
   { to: "/profile", label: "Profile" },
+  { to:"/ai-analysis",label:"AI Analysis"}
 ];
 
 const Navbar = () => {

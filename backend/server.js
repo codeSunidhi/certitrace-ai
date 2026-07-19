@@ -2,6 +2,8 @@ const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
 
+const aiRoutes = require("./routes/ai");
+
 const session = require("express-session");
 const passport = require("passport");
 
@@ -35,6 +37,7 @@ app.use(passport.session());
 // Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/batches", batchRoutes);
+app.use("/api/ai", aiRoutes);
 
 app.use(errorHandler);
 

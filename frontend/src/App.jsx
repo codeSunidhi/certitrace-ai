@@ -5,6 +5,7 @@ import About from "./pages/About";
 import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
 import Profile from "./pages/Profile";
+import AIAnalysis from "./pages/AIAnalysis";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 
@@ -34,6 +35,7 @@ function App() {
               <Dashboard />
             </ProtectedRoute>
           }
+          
         />
         <Route
   path="/profile"
@@ -43,6 +45,10 @@ function App() {
     </ProtectedRoute>
   }
 /> 
+<Route 
+path="/ai-analysis" 
+element={<AIAnalysis />} 
+/>
       </Routes>
     </BrowserRouter>
   );
