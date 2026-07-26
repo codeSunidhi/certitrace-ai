@@ -3,11 +3,11 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import { Menu, X, Leaf } from "lucide-react";
 
 const navItems = [
-  { to: "/", label: "Home" },
-  { to: "/about", label: "About" },
-  { to: "/dashboard", label: "Dashboard" },
-  { to: "/profile", label: "Profile" },
-  { to:"/ai-analysis",label:"AI Analysis"}
+  { to: "/", label: "Home", public: true },
+  { to: "/about", label: "About", protected: true },
+  { to: "/dashboard", label: "Dashboard", protected: true },
+  { to: "/profile", label: "Profile", protected: true },
+  { to: "/ai-analysis", label: "AI Analysis", protected: true },
 ];
 
 const Navbar = () => {
@@ -15,6 +15,9 @@ const Navbar = () => {
   const navigate = useNavigate();
 
   const isLoggedIn = !!localStorage.getItem("token");
+  const visibleNavItems = navItems.filter(
+  (item) => item.public || (item.protected && isLoggedIn)
+);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -51,7 +54,7 @@ const Navbar = () => {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-8">
-            {navItems.map((item) => (
+            {visibleNavItems.map((item) => (
               <NavLink
                 key={item.to}
                 to={item.to}
@@ -97,7 +100,7 @@ const Navbar = () => {
         {open && (
           <div className="md:hidden pb-4 pt-2 space-y-1 border-t border-slate-100">
 
-            {navItems.map((item) => (
+            {visibleNavItems.map((item) => (
               <NavLink
                 key={item.to}
                 to={item.to}

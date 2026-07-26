@@ -16,9 +16,10 @@ function App() {
 
         {/* Public Routes */}
         <Route path="/" element={<Home />} />
+
         <Route path="/login" element={<Login />} />
 
-        {/* Protected Routes */}
+        {/* Protected About Page */}
         <Route
           path="/about"
           element={
@@ -28,6 +29,7 @@ function App() {
           }
         />
 
+        {/* Protected Dashboard */}
         <Route
           path="/dashboard"
           element={
@@ -35,20 +37,28 @@ function App() {
               <Dashboard />
             </ProtectedRoute>
           }
-          
         />
+
+        {/* Protected Profile */}
         <Route
-  path="/profile"
-  element={
-    <ProtectedRoute>
-      <Profile />
-    </ProtectedRoute>
-  }
-/> 
-<Route 
-path="/ai-analysis" 
-element={<AIAnalysis />} 
-/>
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Protected AI Analysis */}
+        <Route
+          path="/ai-analysis"
+          element={
+            <ProtectedRoute>
+              <AIAnalysis />
+            </ProtectedRoute>
+          }
+        />
+
       </Routes>
     </BrowserRouter>
   );
