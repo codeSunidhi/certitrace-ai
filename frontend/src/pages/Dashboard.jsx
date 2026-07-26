@@ -1,13 +1,23 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import Loader from "../components/Loader";
+import Toast from "../components/Toast";
 import api from "../services/api";
 import { Boxes, FileCheck2, Truck } from "lucide-react";
 
 const Dashboard = () => {
+  const navigate = useNavigate();
+
   const [batches, setBatches] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [toast, setToast] = useState({
+  message: "",
+  type: "success",
+});
+  const [search, setSearch] = useState("");
 
   const [editingId, setEditingId] = useState(null);
 
@@ -21,21 +31,41 @@ const Dashboard = () => {
 
   // Fetch batches
   const fetchBatches = async () => {
-    try {
-      const response = await api.get("/batches");
-      setBatches(response.data);
-      setError("");
-    } catch (err) {
-      console.error(err);
-      setError("Unable to connect to the backend.");
-    } finally {
-      setLoading(false);
+  try {
+    setLoading(true);
+
+    const response = await api.get("/batches");
+
+    setBatches(response.data);
+    setError("");
+  } catch (err) {
+    console.error(err);
+
+    if (err.response?.status === 401) {
+      localStorage.removeItem("token");
+      navigate("/login");
+      return;
     }
-  };
+
+    setError(
+      err.response?.data?.message ||
+      "Unable to load batches. Please try again."
+    );
+  } finally {
+    setLoading(false);
+  }
+};
 
   useEffect(() => {
-    fetchBatches();
-  }, []);
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    navigate("/login");
+    return;
+  }
+
+  fetchBatches();
+}, [navigate]);
 
   // Create new batch
   const handleSave = async () => {
@@ -53,12 +83,18 @@ const Dashboard = () => {
       // Update existing batch
       await api.put(`/batches/${editingId}`, newBatch);
 
-      alert("Batch Updated Successfully!");
+      setToast({
+  message: "Batch updated successfully!",
+  type: "success",
+});
     } else {
       // Create new batch
       await api.post("/batches", newBatch);
 
-      alert("Batch Added Successfully!");
+      setToast({
+  message: "Batch added successfully!",
+  type: "success",
+});
     }
 
     setNewBatch({
@@ -75,7 +111,10 @@ const Dashboard = () => {
 
   } catch (err) {
     console.error(err);
-    alert("Operation Failed.");
+    setToast({
+  message: "Unable to save the batch. Please try again.",
+  type: "error",
+});
   }
 };
 
@@ -91,10 +130,16 @@ const Dashboard = () => {
 
     fetchBatches();
 
-    alert("Batch Deleted Successfully!");
+    setToast({
+  message: "Batch deleted successfully!",
+  type: "success",
+});
   } catch (err) {
     console.error(err);
-    alert("Failed to delete batch.");
+    setToast({
+  message: "Unable to delete the batch. Please try again.",
+  type: "error",
+});
   }
 };
 
@@ -143,14 +188,27 @@ const handleEdit = (batch) => {
   ];
 
   if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <h2 className="text-2xl font-semibold text-slate-700">
-          Loading Dashboard...
-        </h2>
-      </div>
-    );
+  return (
+    <div className="min-h-screen bg-slate-50">
+      <Navbar />
+      
+      <Toast
+  message={toast.message}
+  type={toast.type}
+  onClose={() =>
+    setToast({
+      message: "",
+      type: "success",
+    })
   }
+/>
+
+      <Loader message="Loading your batches..." />
+
+      <Footer />
+    </div>
+  );
+}
 
   return (
     <div
