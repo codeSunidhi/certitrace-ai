@@ -2,22 +2,32 @@ const mongoose = require("mongoose");
 
 const batchSchema = new mongoose.Schema(
   {
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+
     batchNumber: {
       type: String,
       required: true,
     },
+
     plant: {
       type: String,
       required: true,
     },
+
     harvestDate: {
       type: String,
       required: true,
     },
+
     certificate: {
       type: String,
       required: true,
     },
+
     dispatch: {
       type: String,
       required: true,

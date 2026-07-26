@@ -1,19 +1,25 @@
 const Batch = require("../models/Batch");
 
-// GET all batches
+// GET all batches for logged-in user
 exports.getBatches = async (req, res, next) => {
   try {
-    const batches = await Batch.find();
+    const batches = await Batch.find({
+      user: req.user.id,
+    });
+
     res.status(200).json(batches);
   } catch (error) {
     next(error);
   }
 };
 
-// GET single batch
+// GET single batch for logged-in user
 exports.getBatch = async (req, res, next) => {
   try {
-    const batch = await Batch.findById(req.params.id);
+    const batch = await Batch.findOne({
+      _id: req.params.id,
+      user: req.user.id,
+    });
 
     if (!batch) {
       return res.status(404).json({
@@ -28,10 +34,13 @@ exports.getBatch = async (req, res, next) => {
   }
 };
 
-// CREATE batch
+// CREATE batch for logged-in user
 exports.createBatch = async (req, res, next) => {
   try {
-    const batch = await Batch.create(req.body);
+    const batch = await Batch.create({
+      ...req.body,
+      user: req.user.id,
+    });
 
     res.status(201).json(batch);
   } catch (error) {
@@ -39,17 +48,20 @@ exports.createBatch = async (req, res, next) => {
   }
 };
 
-// UPDATE batch
+// UPDATE batch belonging to logged-in user
 exports.updateBatch = async (req, res, next) => {
   try {
-    const batch = await Batch.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      {
-        new: true,
-        runValidators: true,
-      }
-    );
+    const batch = await Batch.findOneAndUpdate(
+  {
+    _id: req.params.id,
+    user: req.user.id,
+  },
+  req.body,
+  {
+    new: true,
+    runValidators: true,
+  }
+);
 
     if (!batch) {
       return res.status(404).json({
@@ -64,10 +76,13 @@ exports.updateBatch = async (req, res, next) => {
   }
 };
 
-// DELETE batch
+// DELETE batch belonging to logged-in user
 exports.deleteBatch = async (req, res, next) => {
   try {
-    const batch = await Batch.findByIdAndDelete(req.params.id);
+    const batch = await Batch.findOneAndDelete({
+  _id: req.params.id,
+  user: req.user.id,
+});
 
     if (!batch) {
       return res.status(404).json({
@@ -82,17 +97,28 @@ exports.deleteBatch = async (req, res, next) => {
   }
 };
 
-// SEARCH batches
+// SEARCH batches belonging to logged-in user
 exports.searchBatch = async (req, res, next) => {
   try {
     const q = req.query.q || "";
 
     const batches = await Batch.find({
+      user: req.user.id,
       $or: [
-        { plant: { $regex: q, $options: "i" } },
-        { batchNumber: { $regex: q, $options: "i" } },
+        {
+          plant: {
+            $regex: q,
+            $options: "i",
+          },
+        },
+        {
+          batchNumber: {
+            $regex: q,
+            $options: "i",
+          },
+        },
       ],
-    });
+    }).sort({ createdAt: -1 });
 
     res.status(200).json(batches);
   } catch (error) {
