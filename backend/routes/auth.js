@@ -68,6 +68,7 @@ router.get(
     failureRedirect: "/login",
   }),
   (req, res) => {
+
     const token = jwt.sign(
       {
         id: req.user._id,
@@ -79,9 +80,11 @@ router.get(
       }
     );
 
-    const clientURL = process.env.CLIENT_URL || "http://localhost:5173";
 
-res.redirect(`${clientURL}/login?token=${token}`);
+    res.redirect(
+      `${process.env.CLIENT_URL}/login?token=${token}`
+    );
+
   }
 );
 
