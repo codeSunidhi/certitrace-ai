@@ -145,7 +145,7 @@ useEffect(() => {
     type="button"
     onClick={() =>
       window.location.href =
-        "http://localhost:5000/api/auth/google"
+  `${import.meta.env.VITE_API_URL}/auth/google`
     }
     className="w-full rounded-lg border border-slate-300 bg-white py-2.5 text-sm font-semibold hover:bg-slate-100"
   >
