@@ -18,13 +18,22 @@ const app = express();
 
 connectDB();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: [
+      "http://localhost:5173", // local frontend
+      process.env.CLIENT_URL   // Vercel frontend
+    ],
+    credentials: true,
+  })
+);
+
 app.use(express.json());
 
 // Express Session
 app.use(
   session({
-    secret: "certitrace_secret",
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
   })

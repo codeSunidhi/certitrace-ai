@@ -79,7 +79,9 @@ router.get(
       }
     );
 
-    res.redirect(`http://localhost:5173/login?token=${token}`);
+    const clientURL = process.env.CLIENT_URL || "http://localhost:5173";
+
+res.redirect(`${clientURL}/login?token=${token}`);
   }
 );
 
