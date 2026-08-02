@@ -498,6 +498,47 @@ The document contains:
 
 ---
 
+# Live Deployment
+
+## Live Frontend
+
+https://certitrace-ai.vercel.app
+
+## Live Backend
+
+https://certitrace-ai.onrender.com
+
+---
+
+# Tech Stack
+
+### Frontend
+- React 19
+- Vite
+- Tailwind CSS
+- Axios
+- React Router DOM
+- Lucide React
+
+### Backend
+- Node.js
+- Express.js
+- MongoDB Atlas
+- Mongoose
+- JWT Authentication
+- Passport Google OAuth
+- Hugging Face Inference API
+
+---
+
+# Known Limitations (Free Tier)
+
+- Render free services automatically spin down after approximately 15 minutes of inactivity.
+- The first request after inactivity may take 30–60 seconds while the backend wakes up.
+- Google OAuth requires valid production callback URLs and may not work if OAuth credentials are not configured correctly.
+
+---
+
 # Author
 
 **Sunidhi**
